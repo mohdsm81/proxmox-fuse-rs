@@ -118,6 +118,7 @@ pub enum Request {
     Rmdir(Rmdir),
     Write(Write),
     Readlink(Readlink),
+    Rename(Rename),
     ListXAttrSize(ListXAttrSize),
     ListXAttr(ListXAttr),
     GetXAttrSize(GetXAttrSize),
@@ -155,6 +156,7 @@ impl FuseRequest for Request {
             Request::Rmdir(r) => r.fail(errno),
             Request::Write(r) => r.fail(errno),
             Request::Readlink(r) => r.fail(errno),
+            Request::Rename(r) => r.fail(errno),
             Request::ListXAttrSize(r) => r.fail(errno),
             Request::ListXAttr(r) => r.fail(errno),
             Request::GetXAttrSize(r) => r.fail(errno),
@@ -676,6 +678,29 @@ impl FuseRequest for Rmdir {
 
 impl Rmdir {
     /// The `fh` provided here will be available in later requests for this file handle.
+    pub fn reply(self) -> io::Result<()> {
+        reply_err(self.request, 0)
+    }
+}
+
+/// Rename a file or directory.
+#[derive(Debug)]
+pub struct Rename {
+    pub(crate) request: RequestGuard,
+    pub parent: u64,
+    pub name: OsString,
+    pub new_parent: u64,
+    pub new_name: OsString,
+    pub flags: libc::c_int,
+}
+
+impl FuseRequest for Rename {
+    fn fail(self, errno: libc::c_int) -> io::Result<()> {
+        reply_err(self.request, errno)
+    }
+}
+
+impl Rename {
     pub fn reply(self) -> io::Result<()> {
         reply_err(self.request, 0)
     }

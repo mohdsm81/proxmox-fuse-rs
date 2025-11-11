@@ -328,6 +328,32 @@ impl FuseData {
             }));
     }
 
+    extern "C" fn rename(
+        request: sys::Request,
+        parent: u64,
+        name: sys::StrPtr,
+        new_parent: u64,
+        new_name: sys::StrPtr,
+        flags: libc::c_int,
+    ) {
+        let fuse_data = unsafe { &*(sys::fuse_req_userdata(request) as *mut FuseData) };
+        let name = unsafe { CStr::from_ptr(name) };
+        let name = OsStr::from_bytes(name.to_bytes()).to_owned();
+        let new_name = unsafe { CStr::from_ptr(new_name) };
+        let new_name = OsStr::from_bytes(new_name.to_bytes()).to_owned();
+        fuse_data
+            .pending_requests
+            .borrow_mut()
+            .push_back(Request::Rename(requests::Rename {
+                request: RequestGuard::from_raw(request),
+                parent,
+                name,
+                new_parent,
+                new_name,
+                flags,
+            }));
+    }
+
     extern "C" fn write(
         request: sys::Request,
         inode: u64,
@@ -530,6 +556,12 @@ impl FuseSessionBuilder {
     /// Enable `Rmdir` requests.
     pub fn enable_rmdir(mut self) -> Self {
         self.operations.rmdir = Some(FuseData::rmdir);
+        self
+    }
+
+    /// Enable `Rename` requests.
+    pub fn enable_rename(mut self) -> Self {
+        self.operations.rename = Some(FuseData::rename);
         self
     }
 
