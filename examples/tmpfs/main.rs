@@ -180,17 +180,12 @@ async fn handle_fuse(mut fuse: Fuse) -> Result<(), Error> {
             Request::Read(request) => {
                 // For simplicity we just limit reads to 1 MiB for now...
                 let size = request.size.min(1024 * 1024);
-                let mut buf = Vec::with_capacity(size);
-                unsafe {
-                    buf.set_len(size);
-                }
+                let mut buf = unsafe {
+                    let data = std::alloc::alloc(std::alloc::Layout::array::<u8>(size).unwrap());
+                    Box::from_raw(std::ptr::slice_from_raw_parts_mut(data, size))
+                };
                 match fs.read(request.inode, &mut buf, request.offset) {
-                    Ok(got) => {
-                        unsafe {
-                            buf.set_len(got);
-                        }
-                        request.reply(&buf)?;
-                    }
+                    Ok(got) => request.reply(&buf[..got])?,
                     Err(err) => handle_io_err(err, |err| request.io_fail(err))?,
                 }
             }
