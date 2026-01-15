@@ -3,11 +3,11 @@ use std::ffi::OsStr;
 use std::path::Path;
 use std::{io, mem};
 
-use anyhow::{bail, format_err, Error};
+use anyhow::{Error, bail, format_err};
 use futures::future::FutureExt;
 use futures::select;
 use futures::stream::TryStreamExt;
-use tokio::signal::unix::{signal, SignalKind};
+use tokio::signal::unix::{SignalKind, signal};
 
 use proxmox_fuse::requests::{self, FuseRequest, SetTime};
 use proxmox_fuse::{EntryParam, Fuse, ReplyBufState, Request};

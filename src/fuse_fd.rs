@@ -374,7 +374,7 @@ fn poll_thread_inner(poll: Arc<Epoll>, fd: RawFd, state: Arc<PollState>) -> io::
                     return Err(io::Error::new(
                         io::ErrorKind::Other,
                         "epoll_wait returned unexpected events",
-                    ))
+                    ));
                 }
             }
         }
