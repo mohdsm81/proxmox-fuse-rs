@@ -18,11 +18,10 @@ Build-Depends-Arch: cargo:native <!nocheck>,
  librust-tokio-stream-0.1+default-dev <!nocheck>,
  libfuse3-dev <!nocheck>
 Maintainer: Proxmox Support Team <support@proxmox.com>
-Standards-Version: 4.7.0
+Standards-Version: 4.7.2
 Vcs-Git: 
 Vcs-Browser: 
 X-Cargo-Crate: proxmox-fuse
-Rules-Requires-Root: no
 
 Package: librust-proxmox-fuse-dev
 Architecture: any
@@ -42,11 +41,11 @@ Depends:
  libfuse3-dev
 Provides:
  librust-proxmox-fuse+default-dev (= ${binary:Version}),
- librust-proxmox-fuse-1-dev (= ${binary:Version}),
- librust-proxmox-fuse-1+default-dev (= ${binary:Version}),
- librust-proxmox-fuse-1.0-dev (= ${binary:Version}),
- librust-proxmox-fuse-1.0+default-dev (= ${binary:Version}),
- librust-proxmox-fuse-1.0.0-dev (= ${binary:Version}),
- librust-proxmox-fuse-1.0.0+default-dev (= ${binary:Version})
+ librust-proxmox-fuse-2-dev (= ${binary:Version}),
+ librust-proxmox-fuse-2+default-dev (= ${binary:Version}),
+ librust-proxmox-fuse-2.0-dev (= ${binary:Version}),
+ librust-proxmox-fuse-2.0+default-dev (= ${binary:Version}),
+ librust-proxmox-fuse-2.0.0-dev (= ${binary:Version}),
+ librust-proxmox-fuse-2.0.0+default-dev (= ${binary:Version})
 Description: Expose fuse requests as async streams - Rust source code
  Source code for Debianized Rust crate "proxmox-fuse"
