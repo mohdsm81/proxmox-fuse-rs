@@ -285,12 +285,8 @@ impl Readdir {
         stat: &libc::stat,
         next: isize,
     ) -> io::Result<ReplyBufState> {
-        let name = CString::new(name.as_bytes()).map_err(|_| {
-            io::Error::new(
-                io::ErrorKind::Other,
-                "tried to reply with invalid file name",
-            )
-        })?;
+        let name = CString::new(name.as_bytes())
+            .map_err(|_| io::Error::other("tried to reply with invalid file name"))?;
 
         Ok(self
             .reply_buffer
@@ -356,12 +352,8 @@ impl ReaddirPlus {
         attr_timeout: f64,
         entry_timeout: f64,
     ) -> io::Result<ReplyBufState> {
-        let name = CString::new(name.as_bytes()).map_err(|_| {
-            io::Error::new(
-                io::ErrorKind::Other,
-                "tried to reply with invalid file name",
-            )
-        })?;
+        let name = CString::new(name.as_bytes())
+            .map_err(|_| io::Error::other("tried to reply with invalid file name"))?;
 
         let entry = sys::EntryParam {
             inode: stat.st_ino,
@@ -756,9 +748,8 @@ impl FuseRequest for Readlink {
 
 impl Readlink {
     pub fn reply(self, data: &OsStr) -> io::Result<()> {
-        let data = CString::new(data.as_bytes()).map_err(|_| {
-            io::Error::new(io::ErrorKind::Other, "tried to reply with invalid link")
-        })?;
+        let data = CString::new(data.as_bytes())
+            .map_err(|_| io::Error::other("tried to reply with invalid link"))?;
 
         self.c_reply(&data)
     }
