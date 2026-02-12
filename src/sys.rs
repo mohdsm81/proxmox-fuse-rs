@@ -77,6 +77,7 @@ unsafe extern "C" {
     pub fn fuse_reply_readlink(req: Request, link: StrPtr) -> c_int;
     pub fn fuse_reply_none(req: Request);
     pub fn fuse_reply_write(req: Request, count: libc::size_t) -> c_int;
+    pub fn fuse_reply_statfs(req: Request, stbuf: *const libc::statvfs) -> c_int;
     pub fn fuse_req_userdata(req: Request) -> MutPtr;
     pub fn fuse_add_direntry_plus(req: Request, buf: MutStrPtr, bufsize: size_t, name: StrPtr, stbuf: Option<&EntryParam>, off: c_int) -> size_t;
     pub fn fuse_add_direntry(req: Request, buf: MutStrPtr, bufsize: size_t, name: StrPtr, stbuf: Option<&libc::stat>, off: c_int) -> size_t;

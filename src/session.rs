@@ -94,6 +94,17 @@ impl FuseData {
             }));
     }
 
+    extern "C" fn statfs(request: sys::Request, inode: u64) {
+        let fuse_data = unsafe { &*(sys::fuse_req_userdata(request) as *mut FuseData) };
+        fuse_data
+            .pending_requests
+            .borrow_mut()
+            .push_back(Request::Statfs(requests::Statfs {
+                request: RequestGuard::from_raw(request),
+                inode,
+            }));
+    }
+
     extern "C" fn readdir(
         request: sys::Request,
         inode: u64,
@@ -544,6 +555,12 @@ impl FuseSessionBuilder {
     /// Enable `Setattr` requests.
     pub fn enable_setattr(mut self) -> Self {
         self.operations.setattr = Some(FuseData::setattr);
+        self
+    }
+
+    /// Enable `Statfs` requests.
+    pub fn enable_statfs(mut self) -> Self {
+        self.operations.statfs = Some(FuseData::statfs);
         self
     }
 

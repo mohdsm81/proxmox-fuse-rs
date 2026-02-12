@@ -106,6 +106,7 @@ pub enum Request {
     Forget(Forget),
     Getattr(Getattr),
     Setattr(Setattr),
+    Statfs(Statfs),
     Readdir(Readdir),
     ReaddirPlus(ReaddirPlus),
     Mkdir(Mkdir),
@@ -144,6 +145,7 @@ impl FuseRequest for Request {
             Request::Lookup(r) => r.fail(errno),
             Request::Getattr(r) => r.fail(errno),
             Request::Setattr(r) => r.fail(errno),
+            Request::Statfs(r) => r.fail(errno),
             Request::Readdir(r) => r.fail(errno),
             Request::ReaddirPlus(r) => r.fail(errno),
             Request::Mkdir(r) => r.fail(errno),
@@ -236,6 +238,28 @@ impl Getattr {
     /// Send a reply for a `Getattr` request.
     pub fn reply(self, stat: &libc::stat, timeout: f64) -> io::Result<()> {
         reply_result!(self: sys::fuse_reply_attr(self.request.raw, Some(stat), timeout))
+    }
+}
+
+/// Get filesystem statistics.
+///
+/// This is the equivalent of a `statfs` call.
+#[derive(Debug)]
+pub struct Statfs {
+    pub(crate) request: RequestGuard,
+    pub inode: u64,
+}
+
+impl FuseRequest for Statfs {
+    fn fail(self, errno: libc::c_int) -> io::Result<()> {
+        reply_err(self.request, errno)
+    }
+}
+
+impl Statfs {
+    /// Send a reply for a `Statfs` request.
+    pub fn reply(self, stbuf: &libc::statvfs) -> io::Result<()> {
+        reply_result!(self: sys::fuse_reply_statfs(self.request.raw, stbuf as *const _))
     }
 }
 
