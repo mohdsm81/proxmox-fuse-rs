@@ -101,6 +101,7 @@ pub trait FuseRequest: Sized {
 }
 
 #[derive(Debug)]
+#[non_exhaustive]
 pub enum Request {
     Lookup(Lookup),
     Forget(Forget),
