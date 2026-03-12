@@ -1,4 +1,11 @@
-rust-proxmox-fuse (2.0.0-1) UNRELEASED; urgency=medium
+rust-proxmox-fuse (3.0.0-1) trixie; urgency=medium
+
+  * add support for statfs operation
+  * make Request non_exhaustive so adding more is not always an API break
+
+ -- Proxmox Support Team <support@proxmox.com>  Thu, 12 Mar 2026 09:43:16 +0100
+
+rust-proxmox-fuse (2.0.0-1) trixie; urgency=medium
 
   * add support for rename operation
   * use explicit "C" ABI for extern functions

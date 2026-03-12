@@ -41,11 +41,11 @@ Depends:
  libfuse3-dev
 Provides:
  librust-proxmox-fuse+default-dev (= ${binary:Version}),
- librust-proxmox-fuse-2-dev (= ${binary:Version}),
- librust-proxmox-fuse-2+default-dev (= ${binary:Version}),
- librust-proxmox-fuse-2.0-dev (= ${binary:Version}),
- librust-proxmox-fuse-2.0+default-dev (= ${binary:Version}),
- librust-proxmox-fuse-2.0.0-dev (= ${binary:Version}),
- librust-proxmox-fuse-2.0.0+default-dev (= ${binary:Version})
+ librust-proxmox-fuse-3-dev (= ${binary:Version}),
+ librust-proxmox-fuse-3+default-dev (= ${binary:Version}),
+ librust-proxmox-fuse-3.0-dev (= ${binary:Version}),
+ librust-proxmox-fuse-3.0+default-dev (= ${binary:Version}),
+ librust-proxmox-fuse-3.0.0-dev (= ${binary:Version}),
+ librust-proxmox-fuse-3.0.0+default-dev (= ${binary:Version})
 Description: Expose fuse requests as async streams - Rust source code
  Source code for Debianized Rust crate "proxmox-fuse"
