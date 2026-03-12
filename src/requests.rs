@@ -259,7 +259,7 @@ impl FuseRequest for Statfs {
 impl Statfs {
     /// Send a reply for a `Statfs` request.
     pub fn reply(self, stbuf: &libc::statvfs) -> io::Result<()> {
-        reply_result!(self: sys::fuse_reply_statfs(self.request.raw, stbuf as *const _))
+        reply_result!(self: sys::fuse_reply_statfs(self.request.raw, &raw const *stbuf))
     }
 }
 
